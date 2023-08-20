@@ -33,7 +33,7 @@ def parse_args_and_config():
 
     # parse config file
     if not args.test:
-        with open(os.path.join('configs', args.config), 'r') as f:
+        with open(os.path.join('diffusion-torch/ncsn/configs', args.config), 'r') as f:
             config = yaml.full_load(f)
         new_config = dict2namespace(config)
     else:
