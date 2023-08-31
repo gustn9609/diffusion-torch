@@ -76,10 +76,13 @@ class DiffusionCLIP(object):
 
         if self.config.data.dataset in ["CelebA_HQ", "LSUN"]:
             model = DDPM(self.config)
+            self.args.model_path = 'pretrained/celeba_hq.ckpt'
+            print(self.args.model_path)
             if self.args.model_path:
                 init_ckpt = torch.load(self.args.model_path)
             else:
-                init_ckpt = torch.hub.load_state_dict_from_url(url, map_location=self.device)
+                init_ckpt = torch.load(self.args.model_path)
+                # init_ckpt = torch.hub.load_state_dict_from_url(url, map_location=self.device)
             learn_sigma = False
             print("Original diffusion Model loaded.")
         elif self.config.data.dataset in ["FFHQ", "AFHQ"]:
