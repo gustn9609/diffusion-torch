@@ -128,10 +128,10 @@ def parse_args_and_config():
         else:
             args.exp = args.exp + f'_U2U_{new_config.data.category}_{args.img_path.split("/")[-1].split(".")[0]}_t{args.t_0}_ninv{args.n_train_step}_ngen{args.n_train_step}_orig'
 
-    elif args.recon_exp:
-        args.exp = args.exp + f'_REC_{new_config.data.category}_{args.img_path.split("/")[-1].split(".")[0]}_t{args.t_0}_ninv{args.n_train_step}'
-    elif args.find_best_image:
-        args.exp = args.exp + f'_FOpt_{new_config.data.category}_{args.trg_txts[0]}_t{args.t_0}_ninv{args.n_train_step}'
+    # elif args.recon_exp:
+    #     args.exp = args.exp + f'_REC_{new_config.data.category}_{args.img_path.split("/")[-1].split(".")[0]}_t{args.t_0}_ninv{args.n_train_step}'
+    # elif args.find_best_image:
+    #     args.exp = args.exp + f'_FOpt_{new_config.data.category}_{args.trg_txts[0]}_t{args.t_0}_ninv{args.n_train_step}'
 
 
     level = getattr(logging, args.verbose.upper(), None)
@@ -207,8 +207,9 @@ def main():
 
     runner = DiffusionCLIP(args, config)
     try:
+        print(args)
         if args.clip_finetune:
-            runner.clip_finetune()
+            runner.clip_finetune() # diffusioncli.py의 DiffusionCLIP 함수로 이동
         elif args.clip_finetune_eff:
             runner.clip_finetune_eff()
         elif args.clip_latent_optim:
@@ -233,3 +234,5 @@ def main():
 
 if __name__ == '__main__':
     sys.exit(main())
+    
+    

@@ -35,7 +35,9 @@ class DiffusionCLIP(object):
             beta_end=config.diffusion.beta_end,
             num_diffusion_timesteps=config.diffusion.num_diffusion_timesteps
         )
+        print('betas :',betas)
         self.betas = torch.from_numpy(betas).float().to(self.device)
+        print('self.betas :',self.betas)
         self.num_timesteps = betas.shape[0]
 
         alphas = 1.0 - betas
@@ -77,7 +79,6 @@ class DiffusionCLIP(object):
         if self.config.data.dataset in ["CelebA_HQ", "LSUN"]:
             model = DDPM(self.config)
             self.args.model_path = 'pretrained/celeba_hq.ckpt'
-            print(self.args.model_path)
             if self.args.model_path:
                 init_ckpt = torch.load(self.args.model_path)
             else:
@@ -253,6 +254,12 @@ class DiffusionCLIP(object):
                             loss_clip = -torch.log(loss_clip)
                             loss_id = torch.mean(id_loss_func(x0, x))
                             loss_l1 = nn.L1Loss()(x0, x)
+                            print('self.args.clip_loss_w :',self.args.clip_loss_w)
+                            print('loss_clip :',loss_clip)
+                            print('self.args.id_loss_w :',self.args.id_loss_w)
+                            print('loss_id :',loss_id) 
+                            print('self.args.l1_loss_w :',self.args.l1_loss_w)
+                            print('loss_l1 :',loss_l1)
                             loss = self.args.clip_loss_w * loss_clip + self.args.id_loss_w * loss_id + self.args.l1_loss_w * loss_l1
                             loss.backward()
 
@@ -328,10 +335,7 @@ class DiffusionCLIP(object):
             if self.args.model_path:
                 init_ckpt = torch.load(self.args.model_path)
             else:
-                print(1)
-                init_ckpt = torch.load(self.args.model_path)
-                # init_ckpt = torch.hub.load_state_dict_from_url(url, map_location=self.device)
-                print(2)
+                init_ckpt = torch.hub.load_state_dict_from_url(url, map_location=self.device)
             learn_sigma = False
             print("Original diffusion Model loaded.")
         elif self.config.data.dataset in ["FFHQ", "AFHQ", "IMAGENET"]:
