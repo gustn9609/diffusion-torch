@@ -1,0 +1,8 @@
+*.jpg
+*.ckpt
+*.zip
+*.pyc
+*.mdb
+*.pth
+data/
+*.png
